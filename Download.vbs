@@ -1,9 +1,8 @@
-strHDLocation = "c:\script"
+strHDLocation = "c:\script\form"
 ListFile = "C:\script\list.txt"
 
 Set objFSOtexto = CreateObject("Scripting.FileSystemObject")
 Set objFSO = Createobject("Scripting.FileSystemObject")
-Set objADOStream = CreateObject("ADODB.Stream")
 Set objXMLHTTP = CreateObject("MSXML2.ServerXMLHTTP")
 
 
@@ -21,6 +20,7 @@ Do Until objFile.AtEndOfStream
 
 If objXMLHTTP.Status = 200 Then
 
+Set objADOStream = CreateObject("ADODB.Stream")
 objADOStream.Open
 objADOStream.Type = 1 'adTypeBinary
 
@@ -28,18 +28,27 @@ objADOStream.Write objXMLHTTP.ResponseBody
 objADOStream.Position = 0    'Set the stream position to the start
 
 
-objADOStream.SaveToFile strHDLocation & Year(now()) & right("0" & Month(now()),2) & right("0" & Day(now()),2) & right("0" & Hour(now()),2) & right("0" & Minute(now()),2) & right("0" & second(now()),2) & ".pdf"
 
+strHDLocation = strHDLocation & "_" & FileNumber & "_"
+objADOStream.SaveToFile strHDLocation & Year(now()) & "-" & right("0" & Month(now()),2) & "-" & right("0" & Day(now()),2) & "_" & right("0" & Hour(now()),2) & right("0" & Minute(now()),2) & right("0" & second(now()),2) & ".pdf"
+
+strHDLocation = "c:\script\form"
 objADOStream.Close
+
 
 
 End if
 
 
+
+  
+
 Loop
 
 
+'objFSOtexto = Nothing
 Set objXMLHTTP = Nothing
 Set objFSOtexto = Nothing
-Set objADOStream = Nothing
-objFile.Close
+'Set objADOStream = Nothing
+
+'objFile.Close
